@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<head>
+  <style>
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+    .noShow {
+      visibility: hidden;
+    }
+    .container label {
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <label>Weight</label>
+    <input type="number" name="weight_input" />
+    <label>Length 1</label>
+    <input type="number" name="length1" />
+    <label>Length 2</label>
+    <input type="number" name="length2" />
+    <label>Length 3</label>
+    <input type="number" name="length3" />
+    <label>Height</label>
+    <input type="number" name="height" />
+    <label>Width</label>
+    <input type="number" name="width" />
+    <button onclick="predict()">Predict</button>
+    <span class="result noShow"></span>
+  </div>
+
+  <script>
+    function predict() {
+      const inputs = document.querySelectorAll(".container input");
+      const obj = {};
+      inputs.forEach((each) => {
+        obj[each.name] = each.value;
+      });
+      console.log(obj);
+
+      fetch("/classify", {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+    }
+  </script>
+</body>
